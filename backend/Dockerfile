@@ -8,6 +8,6 @@ RUN npm install
 
 COPY ./src .
 
-EXPOSE 3000
+RUN npm install -g pm2
 
-CMD ["npm", "start"]
+CMD pm2 start npm --name "server" -- start && pm2 start npx --name "tailwind" -- tailwindcss -i ./public/css/main.css -o ./public/css/output.css --watch && pm2 logs

@@ -23,6 +23,8 @@ services:
       DB_USER: "utente_db"
       DB_PASSWORD: "Ciao1234oaiC"
       DB_NAME: "progetto_tdp"
+    volumes:
+      - ./backend/src:/usr/src/app
     networks:
       - backend_network
 

@@ -12,6 +12,31 @@
                 <h1 class="text-2xl font-bold text-blue-600">/api/users</h1>
             </div>
             <p class="text-gray-700 mt-2">Utilizza questo endpoint per vedere tutti gli utenti.</p>
+            <p class="text-gray-700 mt-4">Risposta:</p>
+            <div class="bg-slate-900 text-white px-4 py-2 rounded-md mt-2">
+                <pre>
+{
+    [{
+        "id": "[id]",
+        "displayname": "[displayname]",
+        "username": "[username]",
+        "timestamp": "[timestamp]",
+        "rules": "[ruolo]"
+    },
+    {
+        "id": [id2]
+        "displayname": "[displayname2]",
+        "username": "[username2]",
+        "timestamp": "[timestamp2]",
+        "rules": "[ruolo2]"
+    }]
+}</pre>
+            </div>
+
+            <p class="text-gray-700 mt-4">Descrizione:</p>
+            <ul class="list-disc pl-5">
+                <li>Restituisce i dati dell'utente scelto</li>
+            </ul>
         </div>
 
         <div class="my-5 mx-5 py-5 px-6 bg-gray-100 rounded-xl shadow-lg hover:bg-gray-200 transition-all duration-300">
@@ -21,53 +46,226 @@
                 <h1 class="text-2xl font-bold text-blue-600">/api/users/:id</h1>
             </div>
             <p class="text-gray-700 mt-2">Utilizza questo endpoint per visualizzare un utente specifico tramite il suo ID.</p>
+            <div class="mt-4 p-4 bg-gray-50 border-l-4 border-blue-500 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-800">Parametri:</h3>
+                <ul class="mt-2 space-y-2">
+                    <li>
+                        <span class="font-semibold text-gray-900">id</span> - L'id del post.
+                        <br>
+                        <span class="text-sm text-gray-500">Tipo: int</span>
+                    </li>
+                </ul>
+            </div>
+
+            <p class="text-gray-700 mt-4">Risposta:</p>
+            <div class="bg-slate-900 text-white px-4 py-2 rounded-md mt-2">
+                <pre>
+{
+    "user": {
+        "displayname": "[displayname]",
+        "username": "[username]",
+        "timestamp": "[timestamp]"
+        "rules": "[ruolo]"
+    }
+}</pre>
+            </div>
+
+            <p class="text-gray-700 mt-4">Descrizione:</p>
+            <ul class="list-disc pl-5">
+                <li>Restituisce i dati dell'utente scelto</li>
+            </ul>
         </div>
 
         <!-- Separatore -->
         <hr class="my-6 border-t-2 border-gray-300 w-full max-w-4xl mx-auto">
 
+        <!-- /api/blog/posts -->
         <div class="my-5 mx-5 py-5 px-6 bg-gray-100 rounded-xl shadow-lg hover:bg-gray-200 transition-all duration-300">
             <div class="flex items-center space-x-2">
                 <span class="px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded-full">GET</span>
                 <h1 class="text-2xl font-bold text-blue-600">/api/blog/posts</h1>
             </div>
             <p class="text-gray-700 mt-2">Utilizza questo endpoint per vedere tutti i post del blog.</p>
+
+            <p class="text-gray-700 mt-4">Risposta:</p>
+            <div class="bg-slate-900 text-white px-4 py-2 rounded-md mt-2">
+                <pre>
+{
+    [{
+        "id": [id]
+        "title": "[titolo]",
+        "content": "[contenuto]",
+        "author": "[autore]",
+        "timestamp": "[timestamp]"
+    },
+    {
+        "id": [id2]
+        "title": "[titolo2]",
+        "content": "[contenuto2]",
+        "author": "[autore2]",
+        "timestamp": "[timestamp2]"
+    }]
+}</pre>
+            </div>
+
+            <p class="text-gray-700 mt-4">Descrizione:</p>
+            <ul class="list-disc pl-5">
+                <li>Restituisce uno status che può essere: ["ok", "title error", "content error"] ed altri</li>
+            </ul>
         </div>
-        
+
+        <!-- /api/blog/posts/:id -->
         <div class="my-5 mx-5 py-5 px-6 bg-gray-100 rounded-xl shadow-lg hover:bg-gray-200 transition-all duration-300">
             <div class="flex items-center space-x-2">
                 <span class="px-3 py-1 text-sm font-semibold text-white bg-green-500 rounded-full">GET</span>
                 <span class="px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-full">DELETE</span>
                 <h1 class="text-2xl font-bold text-blue-600">/api/blog/posts/:id</h1>
             </div>
+
             <p class="text-gray-700 mt-2">Utilizza questo endpoint per vedere un singolo post del blog.</p>
+            <div class="mt-4 p-4 bg-gray-50 border-l-4 border-blue-500 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-800">Parametri:</h3>
+                <ul class="mt-2 space-y-2">
+                    <li>
+                        <span class="font-semibold text-gray-900">id</span> - L'id del post.
+                        <br>
+                        <span class="text-sm text-gray-500">Tipo: int</span>
+                    </li>
+                </ul>
+            </div>
+
+            <p class="text-gray-700 mt-4">Risposta:</p>
+            <div class="bg-slate-900 text-white px-4 py-2 rounded-md mt-2">
+                <pre>
+{
+    "post": {
+        "title": "[titolo]",
+        "content": "[contenuto]",
+        "author": "[autore]",
+        "timestamp": "[timestamp]"
+    }
+}</pre>
+            </div>
+
+            <p class="text-gray-700 mt-4">Descrizione:</p>
+            <ul class="list-disc pl-5">
+                <li>Restituisce i dati del post scelto/li>
+            </ul>
         </div>
 
+        <!-- /api/blog/new -->
         <div class="my-5 mx-5 py-5 px-6 bg-gray-100 rounded-xl shadow-lg hover:bg-gray-200 transition-all duration-300">
             <div class="flex items-center space-x-2">
                 <span class="px-3 py-1 text-sm font-semibold text-white bg-orange-500 rounded-full">POST</span>
                 <h1 class="text-2xl font-bold text-blue-600">/api/blog/new (admin only)</h1>
             </div>
             <p class="text-gray-700 mt-2">Utilizza questo endpoint per inserire un nuovo post nel blog.</p>
+
+            <div class="mt-4 p-4 bg-gray-50 border-l-4 border-blue-500 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-800">Parametri:</h3>
+                <ul class="mt-2 space-y-2">
+                    <li>
+                        <span class="font-semibold text-gray-900">title</span> - Il titolo del post.
+                        <br>
+                        <span class="text-sm text-gray-500">Tipo: stringa</span>
+                    </li>
+                    <li>
+                        <span class="font-semibold text-gray-900">content</span> - Il contenuto del post.
+                        <br>
+                        <span class="text-sm text-gray-500">Tipo: stringa</span>
+                    </li>
+                </ul>
+            </div>
+
+            <p class="text-gray-700 mt-4">Risposta:</p>
+            <div class="bg-slate-900 text-white px-4 py-2 rounded-md mt-2">
+                <pre>
+{
+    "status": "[status]"
+}</pre>
+            </div>
+
+            <p class="text-gray-700 mt-4">Descrizione:</p>
+            <ul class="list-disc pl-5">
+                <li>Restituisce uno status che può essere: ["ok", "title error", "content error"] ed altri</li>
+            </ul>
         </div>
 
         <hr class="my-6 border-t-2 border-gray-300 w-full max-w-4xl mx-auto">
 
+        <!-- /api/auth/register -->
         <div class="my-5 mx-5 py-5 px-6 bg-gray-100 rounded-xl shadow-lg hover:bg-gray-200 transition-all duration-300">
             <div class="flex items-center space-x-2">
                 <span class="px-3 py-1 text-sm font-semibold text-white bg-orange-500 rounded-full">POST</span>
-                <h1 class="text-2xl font-bold text-blue-600">/api/register</h1>
+                <h1 class="text-2xl font-bold text-blue-600">/api/auth/register</h1>
             </div>
             <p class="text-gray-700 mt-2">Utilizza questo endpoint per registrarti.</p>
+
+            <div class="mt-4 p-4 bg-gray-50 border-l-4 border-blue-500 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-800">Parametri:</h3>
+                <ul class="mt-2 space-y-2">
+                    <li>
+                        <span class="font-semibold text-gray-900">username</span> - Il nome utente dell'utente.
+                        <br>
+                        <span class="text-sm text-gray-500">Tipo: stringa</span>
+                    </li>
+                    <li>
+                        <span class="font-semibold text-gray-900">password</span> - La password dell'utente.
+                        <br>
+                        <span class="text-sm text-gray-500">Tipo: stringa</span>
+                    </li>
+                </ul>
+            </div>
+
+            <p class="text-gray-700 mt-4">Risposta:</p>
+            <div class="bg-slate-900 text-white px-4 py-2 rounded-md mt-2">
+                <pre>
+{
+    "token": "[token]"
+}</pre>
+            </div>
+
+            <p class="text-gray-700 mt-4">Descrizione:</p>
+            <ul class="list-disc pl-5">
+                <li>Restituisce un token JWT che può essere usato per autenticarsi in altri endpoint protetti.</li>
+            </ul>
         </div>
 
-        <div class="my-5 mx-5 py-5 px-6 bg-gray-100 rounded-xl shadow-lg hover:bg-gray-200 transition-all duration-300">
+        <!-- /api/auth/login -->
+        <div class="my-5 mx-5 py-5 px-6 bg-white rounded-xl shadow-lg hover:bg-gray-50 transition-all duration-300">
             <div class="flex items-center space-x-2">
                 <span class="px-3 py-1 text-sm font-semibold text-white bg-orange-500 rounded-full">POST</span>
-                <h1 class="text-2xl font-bold text-blue-600">/api/login</h1>
+                <h1 class="text-2xl font-bold text-blue-600">/api/auth/login</h1>
             </div>
-            <p class="text-gray-700 mt-2">Utilizza questo endpoint per loggarti.</p>
-        </div>
+            <p class="text-gray-700 mt-2">Utilizza questo endpoint per loggarti. Invia una richiesta POST con i seguenti parametri:</p>
 
-    </div>
+            <div class="mt-4 p-4 bg-gray-50 border-l-4 border-blue-500 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-800">Parametri:</h3>
+                <ul class="mt-2 space-y-2">
+                    <li>
+                        <span class="font-semibold text-gray-900">username</span> - Il nome utente dell'utente.
+                        <br>
+                        <span class="text-sm text-gray-500">Tipo: stringa</span>
+                    </li>
+                    <li>
+                        <span class="font-semibold text-gray-900">password</span> - La password dell'utente.
+                        <br>
+                        <span class="text-sm text-gray-500">Tipo: stringa</span>
+                    </li>
+                </ul>
+            </div>
+
+            <p class="text-gray-700 mt-4">Risposta:</p>
+            <div class="bg-slate-900 text-white px-4 py-2 rounded-md mt-2">
+                <pre>
+{
+    "token": "[token]"
+}</pre>
+            </div>
+
+            <p class="text-gray-700 mt-4">Descrizione:</p>
+            <ul class="list-disc pl-5">
+                <li>Restituisce un token JWT che può essere usato per autenticarsi in altri endpoint protetti.</li>
+            </ul>
+        </div>
 </main>
