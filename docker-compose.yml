@@ -1,0 +1,31 @@
+services:
+  database:
+    image: mariadb:latest
+    container_name: progetto_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root_password_segreta'
+      MYSQL_DATABASE: 'progetto_tdp'
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend_network
+
+  backend:
+    build: ./backend
+    container_name: progetto_backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: "database"
+      DB_USER: "utente_db"
+      DB_PASSWORD: "Ciao1234oaiC"
+      DB_NAME: "progetto_tdp"
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
