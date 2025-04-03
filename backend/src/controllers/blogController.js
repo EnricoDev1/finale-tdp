@@ -3,59 +3,75 @@ import pool from "../db.js"
 export const getPosts = (req, res) => {
     pool.query('SELECT displayname as author, title, content, timestamp FROM posts JOIN users ON users.id = posts.id_author')
         .then(([rows]) => {
-            res.json(rows);
+            if (rows.length > 0) {
+                res.json(rows);
+            } else {
+                res.status(404).json({ message: "No posts found" });
+            }
         })
         .catch(err => {
-            console.error("Query fallita:", err);
+            res.status(500).json({ err: "Unable to fetch posts" });
+            console.error("Query failed:", err);
         });
-}
+};
 
 export const newPost = (req, res) => {
-
-    // in realtà si potrebbe prendere dal cookie lo username idk
-    const { title, content, username } = req.params;
+    const { title, content, username } = req.body;
 
     pool.query("SELECT id FROM users WHERE username = ?", [username])
-        .then(([id]) => {
-            pool.query("INSERT INTO OR IGNORE posts(title, content, author) VALUES ('?', '?', '?')", [title, content, username])
-            .then(([rows]) => {
-                res.json(rows);
-            })
-            .catch((err) => {
-                res.status(500);
-                res.json({"err" : "Impossible to add new post"});
-                console.error("Query fallita:", err);
-            })
+        .then(([rows]) => {
+            if (rows.length > 0) {
+                const userId = rows[0].id;
+                pool.query("INSERT INTO posts (title, content, id_author) VALUES (?, ?, ?)", [title, content, userId])
+                    .then(([result]) => {
+                        res.json({ status: "Post added successfully", postId: result.insertId });
+                    })
+                    .catch((err) => {
+                        res.status(500);
+                        res.json({ err: "Unable to add new post" });
+                        console.error("Query failed:", err);
+                    });
+            } else {
+                res.status(400);
+                res.json({ err: "User not found" });
+            }
         })
         .catch((err) => {
             res.status(500);
-            res.json({"err" : "Unable to add new post"});
-            console.error("Query fallita:", err);
-        })
-}
+            res.json({ err: "Unable to add new post" });
+            console.error("Query failed:", err);
+        });
+};
+
 
 export const getPostById = (req, res) => {
     const { id } = req.params;
     pool.query('SELECT displayname as author, title, content, timestamp FROM posts JOIN users ON users.id = posts.id_author WHERE posts.id = ?', [id])
         .then(([rows]) => {
-            res.json(rows);
+            if (rows.length > 0) {
+                res.json(rows[0]);
+            } else {
+                res.status(404).json({ message: "Post not found" });
+            }
         })
         .catch(err => {
-            res.status(500);
-            res.json({"err" : "Impossible to get this post"});
-            console.error("Query fallita:", err);
+            res.status(500).json({ err: "Unable to fetch the post" });
+            console.error("Query failed:", err);
         });
-}
+};
 
 export const deletePostById = (req, res) => {
     const { id } = req.params;
     pool.query('DELETE FROM posts WHERE id = ?', [id])
-        .then(([rows]) => {
-            res.json({ "status": "ok" });
+        .then(([result]) => {
+            if (result.affectedRows > 0) {
+                res.json({ status: "Post deleted successfully" });
+            } else {
+                res.status(404).json({ message: "Post not found" });
+            }
         })
         .catch(err => {
-            res.status(500);
-            res.json({"err" : "Impossible to delete"});
-            console.error("Query fallita:", err);
+            res.status(500).json({ err: "Unable to delete the post" });
+            console.error("Query failed:", err);
         });
-}
+};

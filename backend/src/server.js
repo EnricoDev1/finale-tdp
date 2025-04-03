@@ -1,16 +1,23 @@
 import apiRoutes from "./routes/api.js";
 import express from "express";
 import pool from './db.js';
+import cors from 'cors';
 import path from "path";
+import morgan from 'morgan';
 
 const app = express()
 
-
 pool.getConnection()
-  .then((connection) => {
+  .then((pool) => {
     app.set("view engine", "ejs");
     app.set("views", path.join(process.cwd(), "views"));
     app.use(express.static("public"));
+
+    // dopo devo toglierlo lol
+    app.use(cors());
+
+    // logger
+    app.use(morgan('dev'));
 
     // parse request
     app.use(express.json());
