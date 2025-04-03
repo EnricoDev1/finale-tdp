@@ -1,8 +1,22 @@
+import pool from "../db.js"
+
 export const getUsers = (req, res) => {
-    res.json([{id: 0, nome: "Michele", cognome: "Cavagni"}, {id: 1, nome: "Enrico", cognome: "Officioso"}])
+    pool.query('SELECT displayname, lastlogin, role FROM users')
+    .then(([rows]) => {
+        res.json(rows);
+    })
+    .catch(err => {
+      console.error("Query test fallita:", err);
+    });
 }
 
 export const getUserById = (req, res) => {
-    const { id } = req.body;
-    res.json({id, nome: "Michele"}) // poi lo implemento lol
+    const { id } = req.params;
+    pool.query('SELECT displayname, lastlogin, role FROM users WHERE id = ?', [id])
+    .then(([rows]) => {
+        res.json(rows);
+    })
+    .catch(err => {
+      console.error("Query test fallita:", err);
+    });
 }
