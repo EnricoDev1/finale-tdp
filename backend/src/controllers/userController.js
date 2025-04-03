@@ -17,6 +17,8 @@ export const getUserById = (req, res) => {
         res.json(rows);
     })
     .catch(err => {
-      console.error("Query test fallita:", err);
+        res.status(500);
+        res.json({"err" : "Impossible to get this user"});
+        console.error("Query fallita:", err);
     });
 }

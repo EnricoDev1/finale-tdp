@@ -6,12 +6,32 @@ export const getPosts = (req, res) => {
             res.json(rows);
         })
         .catch(err => {
-            console.error("Query test fallita:", err);
+            console.error("Query fallita:", err);
         });
 }
 
 export const newPost = (req, res) => {
-    /* ... */
+
+    // in realtà si potrebbe prendere dal cookie lo username idk
+    const { title, content, username } = req.params;
+
+    pool.query("SELECT id FROM users WHERE username = ?", [username])
+        .then(([id]) => {
+            pool.query("INSERT INTO OR IGNORE posts(title, content, author) VALUES ('?', '?', '?')", [title, content, username])
+            .then(([rows]) => {
+                res.json(rows);
+            })
+            .catch((err) => {
+                res.status(500);
+                res.json({"err" : "Impossible to add new post"});
+                console.error("Query fallita:", err);
+            })
+        })
+        .catch((err) => {
+            res.status(500);
+            res.json({"err" : "Unable to add new post"});
+            console.error("Query fallita:", err);
+        })
 }
 
 export const getPostById = (req, res) => {
@@ -21,7 +41,9 @@ export const getPostById = (req, res) => {
             res.json(rows);
         })
         .catch(err => {
-            console.error("Query test fallita:", err);
+            res.status(500);
+            res.json({"err" : "Impossible to get this post"});
+            console.error("Query fallita:", err);
         });
 }
 
@@ -34,6 +56,6 @@ export const deletePostById = (req, res) => {
         .catch(err => {
             res.status(500);
             res.json({"err" : "Impossible to delete"});
-            console.error("Query test fallita:", err);
+            console.error("Query fallita:", err);
         });
 }
