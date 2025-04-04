@@ -24,6 +24,7 @@ services:
       DB_USER: "utente_db"
       DB_PASSWORD: "Ciao1234oaiC"
       DB_NAME: "progetto_tdp"
+      SECRET: "segretone_del_jwt_pisellone"
     volumes:
       - ./backend/src:/usr/src/app
     networks:
