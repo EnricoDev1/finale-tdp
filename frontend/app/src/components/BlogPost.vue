@@ -5,7 +5,15 @@ import axios from "axios";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 
-const md = new MarkdownIt({ html: true, breaks: true, linkify: true });
+const md = new MarkdownIt({
+  html: true,
+  breaks: true,
+  linkify: true,
+  highlight: function (str, lang) {
+    return `<pre class="hljs bg-gray-800 rounded-lg p-4 overflow-x-auto"><code>${md.utils.escapeHtml(str)}</code></pre>`;
+  }
+});
+
 const route = useRoute();
 const post = ref(null);
 
@@ -16,75 +24,114 @@ onMounted(async () => {
     content: DOMPurify.sanitize(md.render(res.data.content.trim()))
   };
 });
+
+const render = (content) => {
+    const cleanedContent = content.trim().replace(/^\s+/gm, "");
+    return DOMPurify.sanitize(md.render(cleanedContent));
+};
 </script>
 
 <template>
-  <div class="container" v-if="post">
-    <h1>{{ post.title }}</h1>
-    <p class="meta">{{ post.author }} | {{ post.timestamp }}</p>
-    <div v-html="post.content" class="prose"></div>
+  <div v-if="post" class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+      <!-- Article Container -->
+      <article class="bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
+        <!-- Article Header -->
+        <header class="border-b border-gray-700 p-6 sm:p-8">
+          <div class="flex items-center justify-between mb-4">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900 text-indigo-200">
+              {{ post.category || 'Generale' }}
+            </span>
+            <span class="text-sm text-gray-400">{{ post.timestamp }}</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+            {{ post.title }}
+          </h1>
+
+          <div class="flex items-center space-x-3">
+            <div class="flex-shrink-0">
+              <span class="text-2xl">👤</span>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-300">{{ post.author }}</p>
+              <p class="text-xs text-gray-500">{{ post.reading_time || '5 min' }} di lettura</p>
+            </div>
+          </div>
+        </header>
+
+        <!-- Article Content -->
+        <div
+          class="prose prose-invert max-w-none p-6 sm:p-8"
+          v-html="render(post.content)"
+        ></div>
+
+        <!-- Article Footer -->
+        <footer class="border-t border-gray-700 p-6 sm:p-8">
+          <router-link
+            to="/"
+            class="inline-flex items-center text-indigo-400 hover:text-indigo-300 transition-colors"
+          >
+            ← Torna agli articoli
+          </router-link>
+        </footer>
+      </article>
+    </div>
   </div>
 </template>
 
-<style scoped>
-.container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  font-family: system-ui, sans-serif;
-  background-color: #1e1e24;
-  color: #eaeaea;
-  min-height: 100vh;
+<style>
+.prose {
+  color: #e5e7eb;
 }
 
-h1 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-  text-align: center;
-  font-weight: 600;
-  color: #ffffff;
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: #f3f4f6;
 }
 
-.post {
-  padding: 1.25rem 1.5rem;
-  border: 1px solid #2a2a31;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  background-color: #2a2a31;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  cursor: pointer;
+.prose a {
+  color: #818cf8;
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
-.post:hover {
-  background-color: #34343c;
-  border-color: #3a3a42;
+.prose a:hover {
+  color: #6366f1;
+  text-decoration: underline;
 }
 
-.post h2 {
-  font-size: 1.3rem;
-  font-weight: 500;
-  margin: 0 0 0.5rem;
-  color: #f0f0f0;
+.prose code {
+  @apply bg-gray-700 text-indigo-200 px-2 py-1 rounded;
 }
 
-.meta {
-  font-size: 0.85rem;
-  color: #999;
-  margin-bottom: 1rem;
+.prose pre {
+  @apply bg-gray-700 border border-gray-600 rounded-lg overflow-x-auto;
 }
 
-.content {
-  font-size: 0.95rem;
-  color: #ccc;
-  line-height: 1.6;
+.prose pre code {
+  @apply bg-transparent p-0;
 }
 
-.content :deep(code) {
-  background-color: #3a3a42;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 0.9em;
-  color: #ffe484;
+.prose blockquote {
+  @apply border-l-4 border-indigo-500 pl-4 italic text-gray-300;
+}
+
+.prose img {
+  @apply rounded-lg shadow-lg mx-auto;
+}
+
+.prose table {
+  @apply w-full border-collapse;
+}
+
+.prose th {
+  @apply bg-gray-700 text-left px-4 py-2 border-b border-gray-600;
+}
+
+.prose td {
+  @apply px-4 py-2 border-b border-gray-700;
 }
 </style>
