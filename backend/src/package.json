@@ -5,6 +5,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
+    "dev": "nodemon --legacy-watch server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gioppyy, EnricoDev1",
@@ -18,6 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.14.0",
+    "nodemon": "^3.1.9",
     "retry": "^0.13.1"
   },
   "devDependencies": {
