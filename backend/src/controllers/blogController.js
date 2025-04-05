@@ -16,9 +16,10 @@ export const getPosts = (req, res) => {
 };
 
 export const newPost = (req, res) => {
-    const { title, content, username } = req.body;
+    const { title, content } = req.body;
+    const user = req.user;
 
-    pool.query("SELECT id FROM users WHERE username = ?", [username])
+    pool.query("SELECT id FROM users WHERE username = ?", [user.username])
         .then(([rows]) => {
             if (rows.length > 0) {
                 const userId = rows[0].id;
