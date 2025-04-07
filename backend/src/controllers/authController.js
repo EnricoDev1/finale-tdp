@@ -23,13 +23,13 @@ export const loginUser = async (req, res) => {
         const [rows] = await pool.query("SELECT password, role FROM users WHERE username = ?", [username]);
 
         if (rows.length === 0) {
-            return res.status(400).json({ err: "Invalid credentials" });
+            return res.status(401).json({ err: "Invalid credentials" });
         }
 
         const { password: hash, role } = rows[0];
         const match = await bcrypt.compare(password, hash);
         if (!match) {
-            return res.status(400).json({ err: "Invalid credentials" });
+            return res.status(401).json({ err: "Invalid credentials" });
         }
 
         const token = jwt.sign({ username: username, role: rows[0].role }, process.env.SECRET, {

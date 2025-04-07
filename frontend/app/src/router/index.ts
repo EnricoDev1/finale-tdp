@@ -10,7 +10,17 @@ const routes = [
     path: '/post/:id',
     name: 'Post',
     component: () => import('@/views/BlogPostView.vue')
-  }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/LoginView.vue')
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/RegisterView.vue')
+  },
 ];
 
 const router = createRouter({
