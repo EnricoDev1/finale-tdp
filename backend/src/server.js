@@ -29,6 +29,7 @@ pool.getConnection()
         console.log("Server in ascolto su http://localhost:3000.");
 
         // Test query
+        
         pool.query('SELECT 1')
           .then(([rows]) => {
             console.log("Query test riuscita:", rows);
