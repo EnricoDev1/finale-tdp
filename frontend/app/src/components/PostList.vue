@@ -1,11 +1,51 @@
 <template>
-    <div class="container">
-      <h1 class="title">📝 Il Mio Blog</h1>
+    <div class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+          <h1 class="text-4xl font-extrabold text-white sm:text-5xl mb-3">📝 Il Mio Blog</h1>
+          <p class="text-xl text-gray-400">Pensieri, storie e idee</p>
+        </div>
 
-      <div v-for="post in posts" :key="post.id" class="post" @click="$router.push(`/post/${post.id}`)">
-        <h2 class="post-title">{{ post.title }}</h2>
-        <p class="meta">✍️ {{ post.author }} • 🕒 {{ post.timestamp }}</p>
-        <div class="content" v-html="render(post.content.slice(0, 200) + '...')"></div>
+        <!-- Posts Grid -->
+        <div class="space-y-6">
+          <article
+            v-for="post in posts"
+            :key="post.id"
+            @click="$router.push(`/post/${post.id}`)"
+            class="group bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer border border-gray-700 hover:border-indigo-500 "
+          >
+            <div class="p-6 sm:p-8">
+              <div class="flex items-center justify-between mb-4">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900 text-indigo-200">
+                  {{ post.category || 'Generale' }}
+                </span>
+                <span class="text-sm text-gray-400">🕒 {{ post.timestamp }}</span>
+              </div>
+
+              <h2 class="text-2xl font-bold text-white group-hover:text-indigo-400 transition-colors duration-200 mb-3">
+                {{ post.title }}
+              </h2>
+
+              <div class="flex items-center text-gray-400 mb-4">
+                <span class="inline-block mr-2">✍️</span>
+                <span class="font-medium">{{ post.author }}</span>
+              </div>
+
+              <div
+                class="prose prose-invert max-w-none text-gray-300 mb-4 line-clamp-3"
+                v-html="render(post.content.slice(0, 200) + '...')"
+              ></div>
+
+              <div class="flex justify-between items-center mt-6">
+                <span class="text-indigo-400 font-medium group-hover:text-indigo-300 transition-colors duration-200">
+                  Leggi tutto →
+                </span>
+                <span class="text-sm text-gray-500">{{ post.reading_time || '3 min' }} di lettura</span>
+              </div>
+            </div>
+          </article>
+        </div>
       </div>
     </div>
   </template>
@@ -40,81 +80,33 @@
   };
   </script>
 
-  <style scoped>
-  :root {
-    color-scheme: dark;
+  <style>
+  .prose-invert {
+    --tw-prose-body: #e5e7eb;
+    --tw-prose-headings: #f3f4f6;
+    --tw-prose-lead: #d1d5db;
+    --tw-prose-links: #818cf8;
+    --tw-prose-code: #f0f0f0;
+    --tw-prose-pre-code: #f0f0f0;
+    --tw-prose-quotes: #e5e7eb;
   }
 
-  .container {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-    font-family: 'Inter', system-ui, sans-serif;
-    background-color: #121217;
-    color: #e0e0e0;
-    min-height: 100vh;
+  .prose-invert code {
+    @apply bg-gray-700 text-indigo-200 px-2 py-1 rounded;
   }
 
-  .title {
-    text-align: center;
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 2.5rem;
-    color: #ffffff;
+  .prose-invert pre {
+    @apply bg-gray-700 border border-gray-600 rounded-lg overflow-x-auto;
   }
 
-  .post {
-    background: #1c1c22;
-    border: 1px solid #2b2b33;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
+  .prose-invert pre code {
+    @apply bg-transparent p-0;
   }
 
-  .post:hover {
-    background: #23232b;
-    transform: translateY(-2px);
-  }
-
-  .post-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.3rem;
-    color: #fafafa;
-    font-weight: 600;
-  }
-
-  .meta {
-    font-size: 0.9rem;
-    color: #999;
-    margin-bottom: 1rem;
-  }
-
-  .content {
-    font-size: 1rem;
-    color: #ccc;
-    line-height: 1.6;
-  }
-
-  .content :deep(a) {
-    color: #91baff;
-    text-decoration: underline;
-  }
-
-  .content :deep(code) {
-    background-color: #2a2a36;
-    color: #ffd580;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.9em;
-  }
-
-  .content :deep(pre) {
-    background: #1e1e2a;
-    padding: 1rem;
-    border-radius: 8px;
-    overflow-x: auto;
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   </style>
