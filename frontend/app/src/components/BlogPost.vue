@@ -4,13 +4,23 @@ import { useRoute } from "vue-router";
 import axios from "axios";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
+import hljs from "highlight.js";
+import "highlight.js/styles/atom-one-dark.css";
 
 const md = new MarkdownIt({
-    html: true,
-    breaks: true,
-    linkify: true,
-    typographer: true,
-    xhtmlOut: true,
+  html: true,
+  breaks: true,
+  linkify: true,
+  typographer: true,
+  xhtmlOut: true,
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return `<pre class="hljs"><code>${hljs.highlight(str, { language: lang }).value}</code></pre>`;
+      } catch (_) {}
+    }
+    return `<pre class="hljs"><code>${md.utils.escapeHtml(str)}</code></pre>`;
+  },
 });
 
 const route = useRoute();
@@ -123,7 +133,7 @@ const formatDate = (timestamp) => {
 }
 
 .prose pre code {
-  @apply bg-transparent p-0;
+    @apply bg-transparent p-0;
 }
 
 .prose blockquote {
@@ -132,6 +142,14 @@ const formatDate = (timestamp) => {
 
 .prose img {
   @apply rounded-lg shadow-lg mx-auto;
+}
+
+.hljs {
+  @apply rounded-lg p-4 overflow-x-auto !important;
+}
+
+.hljs code {
+  @apply rounded-lg p-4 overflow-x-auto;
 }
 
 .prose table {
