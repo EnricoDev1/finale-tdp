@@ -6,12 +6,11 @@ import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 
 const md = new MarkdownIt({
-  html: true,
-  breaks: true,
-  linkify: true,
-  highlight: function (str, lang) {
-    return `<pre class="hljs bg-gray-800 rounded-lg p-4 overflow-x-auto"><code>${md.utils.escapeHtml(str)}</code></pre>`;
-  }
+    html: true,
+    breaks: true,
+    linkify: true,
+    typographer: true,
+    xhtmlOut: true,
 });
 
 const route = useRoute();
@@ -21,7 +20,7 @@ onMounted(async () => {
   const res = await axios.get(`http://localhost:3000/api/blog/posts/${route.params.id}`);
   post.value = {
     ...res.data,
-    content: DOMPurify.sanitize(md.render(res.data.content.trim()))
+    content: render(res.data.content.trim())
   };
 });
 
@@ -29,8 +28,20 @@ const render = (content) => {
     const cleanedContent = content.trim().replace(/^\s+/gm, "");
     return DOMPurify.sanitize(md.render(cleanedContent));
 };
-</script>
 
+const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return new Intl.DateTimeFormat('it-IT', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).format(date);
+}
+
+</script>
 <template>
   <div v-if="post" class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-4xl mx-auto">
@@ -42,7 +53,7 @@ const render = (content) => {
             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900 text-indigo-200">
               {{ post.category || 'Generale' }}
             </span>
-            <span class="text-sm text-gray-400">{{ post.timestamp }}</span>
+            <span class="text-sm text-gray-400">{{ formatDate(post.timestamp) }}</span>
           </div>
 
           <h1 class="text-3xl sm:text-4xl font-bold text-white mb-4">
