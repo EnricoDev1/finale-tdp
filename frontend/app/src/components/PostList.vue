@@ -42,11 +42,18 @@
 
 <template>
     <div class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-12">
-          <h1 class="text-4xl font-extrabold text-white sm:text-5xl mb-3">📝 Il Mio Blog</h1>
-          <p class="text-xl text-gray-400">Pensieri, storie e idee</p>
+        <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-12">
+          <div class="text-center w-full">
+            <h1 class="text-4xl font-extrabold text-white sm:text-5xl mb-3">📝 Cavagni and Officioso's blog</h1>
+            <p class="text-xl text-gray-400">Pensieri ed idee sulle guerre economiche</p>
+          </div>
+          <button
+            @click="$router.push('/login')"
+            class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
+          >
+            Login
+          </button>
         </div>
 
         <!-- Posts Grid -->
