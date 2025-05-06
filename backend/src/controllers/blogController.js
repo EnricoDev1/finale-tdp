@@ -1,7 +1,7 @@
 import pool from "../db.js"
 
 export const getPosts = (req, res) => {
-    pool.query('SELECT posts.id, displayname as author, title, content, timestamp FROM posts JOIN users ON users.id = posts.id_author')
+    pool.query('SELECT posts.id, displayname as author, role as author_role, title, content, timestamp FROM posts JOIN users ON users.id = posts.id_author')
         .then(([rows]) => {
             if (rows.length > 0) {
                 res.json(rows);

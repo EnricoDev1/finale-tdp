@@ -26,6 +26,16 @@ const routes = [
     name: 'Dashboard',
     component: () => import('@/views/DashboardView.vue')
   },
+  {
+    path: '/dashboard/users',
+    name: 'Users',
+    component: () => import('@/views/UsersView.vue')
+  },
+  {
+    path: '/dashboard/posts',
+    name: 'Posts',
+    component: () => import('@/views/PostsView.vue')
+  }
 ];
 
 const router = createRouter({
