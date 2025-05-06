@@ -13,8 +13,12 @@
   });
 
   const posts = ref([]);
+  const isAuthenticated = ref(false); 
 
   onMounted(async () => {
+
+    isAuthenticated.value = !!localStorage.getItem('token');
+
     const res = await axios.get("http://localhost:3000/api/blog/posts");
     posts.value = res.data.map((post) => ({
       ...post,
@@ -48,12 +52,13 @@
             <h1 class="text-4xl font-extrabold text-white sm:text-5xl mb-3">📝 Cavagni and Officioso's blog</h1>
             <p class="text-xl text-gray-400">Pensieri ed idee sulle guerre economiche</p>
           </div>
-          <button
-            @click="$router.push('/login')"
-            class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200"
-          >
-            Login
-          </button>
+          <button v-if="!isAuthenticated"
+          @click="$router.push('/login')"
+          class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Login</button>
+          
+          <button v-if="isAuthenticated"
+          @click="$router.push('/logout')" 
+          class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Logout</button>
         </div>
 
         <!-- Posts Grid -->

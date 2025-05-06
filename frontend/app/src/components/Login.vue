@@ -15,7 +15,7 @@ const handleLogin = async () => {
       password: password.value,
     });
     
-    localStorage.setItem("token", response.data.token);
+    document.cookie = `token=${response.data.token}; path=/; secure;`;
     router.push("/");
   } catch (err) {
     error.value = err.response.data.err || "Errore durante il login";

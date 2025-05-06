@@ -1,7 +1,7 @@
 import pool from "../db.js"
 
 export const getUsers = (req, res) => {
-    pool.query('SELECT displayname, lastlogin, role FROM users')
+    pool.query('SELECT id, displayname, username, lastlogin, role FROM users')
     .then(([rows]) => {
         res.json(rows);
     })
