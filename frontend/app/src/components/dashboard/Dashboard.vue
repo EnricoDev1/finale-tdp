@@ -18,7 +18,7 @@
             </router-link>
 
             <router-link
-              to="/users"
+              to="/dashboard/users"
               class="block py-2 px-4 text-gray-300 hover:bg-gray-700 rounded mb-1"
               active-class="bg-gray-700 text-white"
             >
@@ -26,7 +26,7 @@
             </router-link>
 
             <router-link
-              to="/posts"
+              to="/dashboard/posts"
               class="block py-2 px-4 text-gray-300 hover:bg-gray-700 rounded mb-1"
               active-class="bg-gray-700 text-white"
             >
@@ -59,11 +59,6 @@
                     <font-awesome-icon :icon="['fas', 'users']" class="text-indigo-400 text-xl" />
                   </div>
                 </div>
-                <div class="mt-2">
-                  <span :class="stats.usersGrowth >= 0 ? 'text-green-400' : 'text-red-400'" class="text-sm">
-                    {{ stats.usersGrowth >= 0 ? '↑' : '↓' }} {{ Math.abs(stats.usersGrowth) }}% rispetto al mese scorso
-                  </span>
-                </div>
               </div>
 
               <!-- Stat 2 -->
@@ -77,28 +72,17 @@
                     <font-awesome-icon :icon="['fas', 'file-lines']" class="text-green-400 text-xl" />
                   </div>
                 </div>
-                <div class="mt-2">
-                  <span :class="stats.postsGrowth >= 0 ? 'text-green-400' : 'text-red-400'" class="text-sm">
-                    {{ stats.postsGrowth >= 0 ? '↑' : '↓' }} {{ Math.abs(stats.postsGrowth) }}% rispetto al mese scorso
-                  </span>
-                </div>
               </div>
-
-              <!-- Stat 3 -->
+              
               <div class="bg-gray-700 p-4 rounded-lg">
                 <div class="flex items-center justify-between">
                   <div>
-                    <p class="text-sm text-gray-300">Commenti</p>
-                    <p class="text-3xl font-bold text-white">{{ stats.totalComments }}</p>
+                    <p class="text-sm text-gray-300">Post medi per utente</p>
+                    <p class="text-3xl font-bold text-white">{{ stats.totalPosts / stats.totalUsers }}</p>
                   </div>
                   <div class="bg-gray-600 p-3 rounded-full">
-                    <font-awesome-icon :icon="['fas', 'comments']" class="text-blue-400 text-xl" />
+                    <font-awesome-icon :icon="['fas', 'file-lines']" class="text-green-400 text-xl" />
                   </div>
-                </div>
-                <div class="mt-2">
-                  <span :class="stats.commentsGrowth >= 0 ? 'text-green-400' : 'text-red-400'" class="text-sm">
-                    {{ stats.commentsGrowth >= 0 ? '↑' : '↓' }} {{ Math.abs(stats.commentsGrowth) }}% rispetto al mese scorso
-                  </span>
                 </div>
               </div>
             </div>
@@ -115,16 +99,6 @@
                 <div>
                   <h2 class="text-xl font-semibold text-white mb-2">Gestione Utenti</h2>
                   <p class="text-gray-400 mb-4">Visualizza e gestisci tutti gli utenti registrati</p>
-
-                  <div class="flex items-center">
-                    <div class="bg-gray-700 p-3 rounded-lg mr-4">
-                      <font-awesome-icon :icon="['fas', 'users']" class="text-indigo-400 text-2xl" />
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-300">Utenti attivi oggi</p>
-                      <p class="text-2xl font-bold text-white">{{ stats.activeUsersToday }}</p>
-                    </div>
-                  </div>
                 </div>
 
                 <div class="bg-gray-700 group-hover:bg-gray-600 p-2 rounded-lg transition-colors">
@@ -135,23 +109,13 @@
 
             <!-- Card Post -->
             <router-link
-              to="/posts"
+              to="/dashboard/posts"
               class="bg-gray-800 rounded-xl shadow-lg p-6 hover:bg-gray-750 transition-colors group"
             >
               <div class="flex justify-between items-start">
                 <div>
                   <h2 class="text-xl font-semibold text-white mb-2">Gestione Post</h2>
                   <p class="text-gray-400 mb-4">Visualizza e gestisci tutti i post pubblicati</p>
-
-                  <div class="flex items-center">
-                    <div class="bg-gray-700 p-3 rounded-lg mr-4">
-                      <font-awesome-icon :icon="['fas', 'file-lines']" class="text-green-400 text-2xl" />
-                    </div>
-                    <div>
-                      <p class="text-sm text-gray-300">Post pubblicati oggi</p>
-                      <p class="text-2xl font-bold text-white">{{ stats.postsToday }}</p>
-                    </div>
-                  </div>
                 </div>
 
                 <div class="bg-gray-700 group-hover:bg-gray-600 p-2 rounded-lg transition-colors">
@@ -172,10 +136,8 @@
   const stats = ref({
     totalUsers: 0,
     totalPosts: 0,
-    totalComments: 0,
     usersGrowth: 0,
     postsGrowth: 0,
-    commentsGrowth: 0,
     activeUsersToday: 0,
     postsToday: 0
   })
@@ -197,19 +159,16 @@
       const token = `Bearer ${document.cookie.split('=')[1]}`
 
       // Simulazione dati (sostituisci con chiamate API reali)
-      const res = await axios.get('http://localhost:3000/api/dashboard/stats', {
+      const resBlog = await axios.get('http://localhost:3000/api/blog/posts', {
         headers: { authorization: token }
       })
 
+      const resUsers = await axios.get('http://localhost:3000/api/users', {
+        headers: { authorization: token }
+      })
       stats.value = {
-        totalUsers: res.data.totalUsers || 1243,
-        totalPosts: res.data.totalPosts || 568,
-        totalComments: res.data.totalComments || 3245,
-        usersGrowth: res.data.usersGrowth || 2.4,
-        postsGrowth: res.data.postsGrowth || 5.7,
-        commentsGrowth: res.data.commentsGrowth || -1.2,
-        activeUsersToday: res.data.activeUsersToday || 24,
-        postsToday: res.data.postsToday || 8
+        totalUsers: resUsers.data.length,
+        totalPosts: resBlog.data.length,
       }
 
       loading.value = false

@@ -17,7 +17,7 @@
 
   onMounted(async () => {
 
-    isAuthenticated.value = !!localStorage.getItem('token');
+    isAuthenticated.value = !!document.cookie;
 
     const res = await axios.get("http://localhost:3000/api/blog/posts");
     posts.value = res.data.map((post) => ({
@@ -39,7 +39,6 @@
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
-        second: '2-digit'
     }).format(date);
 }
 </script>

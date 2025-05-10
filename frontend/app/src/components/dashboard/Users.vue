@@ -42,15 +42,20 @@ const formatDate = (timestamp) => {
 };
 
 const deleteUser = async (userId) => {
-  if (confirm("Sei sicuro di voler eliminare questo utente?")) {
-    try {
-      await axios.delete(`http://localhost:3000/api/blog/users/${userId}`);
-      users.value = users.value.filter(user => user.id !== userId);
-    } catch (err) {
-      error.value = "Errore nell'eliminazione dell'utente";
+  try {
+    const token = `Bearer ${document.cookie.split('=')[1]}`
+    await axios.delete(`http://localhost:3000/api/users/${userId}`, {
+      headers: { authorization: token }
+    })
+    
+  } catch (err) {
+    console.error('Errore nell\'eliminazione dell\'utente:', err)
+    message.value = {
+      type: 'error',
+      text: 'Errore durante l\'eliminazione dell\'utente'
     }
   }
-};
+}
 </script>
 
 <template>
@@ -59,12 +64,6 @@ const deleteUser = async (userId) => {
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-white">Gestione Utenti</h1>
-        <router-link
-          to="/users/new"
-          class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors"
-        >
-          Aggiungi Utente
-        </router-link>
       </div>
 
       <!-- Search and Stats -->
@@ -130,7 +129,7 @@ const deleteUser = async (userId) => {
                     </div>
                     <div class="ml-4">
                       <div class="text-sm font-medium text-white">{{ user.displayname }}</div>
-                      <div class="text-sm text-gray-400">@{{ user.displayname }}</div>
+                      <div class="text-sm text-gray-400">@{{ user.username }}</div>
                     </div>
                   </div>
                 </td>
@@ -150,7 +149,7 @@ const deleteUser = async (userId) => {
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex space-x-2">
                         <router-link
-                            :to="`/users/edit/${user.id}`"
+                            :to="`/dashboard/users/edit/${user.id}`"
                             class="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1"
                             >
                             <font-awesome-icon :icon="['fas', 'pen-to-square']" size="lg"/>

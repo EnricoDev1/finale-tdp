@@ -18,14 +18,14 @@ onMounted(async () => {
     });
 
     console.log("Dati ricevuti:", res.data);
-    posts.data = res.data;
+    posts.value = res.data;
     loading.value = false;
   } catch (err) {
     }
 });
 
 const filteredposts = () => {
-  if (!searchQuery.value) return posts.data;
+  if (!searchQuery.value) return posts.value;
   return posts.value.filter(post =>
     post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
     post.content.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
@@ -45,8 +45,14 @@ const formatDate = (timestamp) => {
 const deletepost = async (postId) => {
   if (confirm("Sei sicuro di voler eliminare questo post?")) {
     try {
-      await axios.delete(`http://localhost:3000/api/blog/posts/${postId}`);
+      const token = `Bearer ${document.cookie.split('=')[1]}`;
+      await axios.delete(`http://localhost:3000/api/blog/posts/${postId}`, {
+        headers : {
+          'authorization': token
+        }
+      });
       posts.value = posts.value.filter(post => post.id !== postId);
+      window.location.reload();
     } catch (err) {
       error.value = "Errore nell'eliminazione dell'post";
     }
@@ -57,15 +63,10 @@ const deletepost = async (postId) => {
 <template>
   <div class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
+
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-white">Gestione Posts</h1>
-        <router-link
-          to="/posts/new"
-          class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors"
-        >
-          Aggiungi post
-        </router-link>
       </div>
 
       <!-- Search and Stats -->
@@ -90,11 +91,12 @@ const deletepost = async (postId) => {
             </div>
             <div class="bg-gray-700 px-4 py-2 rounded-lg text-center">
               <p class="text-sm text-gray-300">Admin</p>
-              <p class="text-xl font-bold text-indigo-400">{{ posts.filter(u => u.role === 'admin').length }}</p>
+              <p class="text-xl font-bold text-indigo-400">{{ posts.filter(u => u.author_role === 'admin').length }}</p>
             </div>
+            
             <div class="bg-gray-700 px-4 py-2 rounded-lg text-center">
               <p class="text-sm text-gray-300">Writer</p>
-              <p class="text-xl font-bold text-green-400">{{ posts.filter(u => u.role === 'writer').length }}</p>
+              <p class="text-xl font-bold text-green-400">{{ posts.filter(u => u.author_role === 'writer').length }}</p>
             </div>
           </div>
         </div>
@@ -152,7 +154,7 @@ const deletepost = async (postId) => {
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div class="flex space-x-2">
                         <router-link
-                            :to="`/posts/edit/${post.id}`"
+                            :to="`/dashboard/posts/edit/${post.id}`"
                             class="text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1"
                             >
                             <font-awesome-icon :icon="['fas', 'pen-to-square']" size="lg"/>

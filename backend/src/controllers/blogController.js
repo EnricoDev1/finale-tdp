@@ -76,3 +76,21 @@ export const deletePostById = (req, res) => {
             console.error("Query failed:", err);
         });
 };
+
+export const editPostById = (req, res) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+
+    pool.query('UPDATE posts SET title = ?, content = ? WHERE id = ?', [title, content, id])
+    .then(([result]) => {
+        if (result.affectedRows > 0) {
+            res.json({ status: "Post edited successfully" });
+        } else {
+            res.status(404).json({ message: "Post not found" });
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ err: "Unable to edit the post" });
+        console.error("Query failed:", err);
+    });   
+}

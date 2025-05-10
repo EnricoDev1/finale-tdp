@@ -22,3 +22,38 @@ export const getUserById = (req, res) => {
         console.error("Query fallita:", err);
     });
 }
+
+export const editUserById = (req, res) => {
+    const { id } = req.params;
+    const { displayname, role } = req.body;
+
+    pool.query('UPDATE users SET displayname = ?, role = ? WHERE id = ?', [displayname, role, id])
+    .then(([result]) => {
+        if (result.affectedRows > 0) {
+            res.json({ status: "User edited successfully" });
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ err: "Unable to edit the user" });
+        console.error("Query failed:", err);
+    });   
+}
+
+export const deleteUserById = (req, res) => {
+    const { id } = req.params;
+
+    pool.query('DELETE FROM users WHERE id = ?', [id])
+    .then(([result]) => {
+        if (result.affectedRows > 0) {
+            res.json({ status: "User deleted successfully" });
+        } else {
+            res.status(404).json({ message: "User not found" });
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ err: "Unable to delete the user" });
+        console.error("Query failed:", err);
+    });   
+}

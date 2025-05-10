@@ -79,18 +79,6 @@ const handleLogin = async () => {
           </div>
 
           <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-600 rounded bg-gray-700"
-              />
-              <label for="remember-me" class="ml-2 block text-sm text-gray-300">
-                Ricordami
-              </label>
-            </div>
-
             <div class="text-sm">
               <a href="#" class="font-medium text-indigo-400 hover:text-indigo-300">
                 Password dimenticata?

@@ -35,6 +35,21 @@ const routes = [
     path: '/dashboard/posts',
     name: 'Posts',
     component: () => import('@/views/PostsView.vue')
+  },
+  {
+    path: '/dashboard/posts/edit/:id',
+    name: 'Edits',
+    component: () => import('@/views/PostEditView.vue')
+  },
+  {
+    path: '/dashboard/users/edit/:id',
+    name: 'UserEdit',
+    component: () => import('@/views/UserEditView.vue')
+  },
+  {
+    path: '/news',
+    name: 'news',
+    component: () => import('@/views/NewsView.vue')    
   }
 ];
 

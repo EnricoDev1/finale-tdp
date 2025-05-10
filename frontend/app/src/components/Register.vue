@@ -20,7 +20,6 @@ const handleRegister = async () => {
   try {
     const response = await axios.post("http://localhost:3000/api/auth/register", {
       username: name.value,
-      email: email.value,
       password: password.value,
       displayname: displayName.value
     });
@@ -87,23 +86,6 @@ const handleRegister = async () => {
           </div>
 
           <div>
-            <label for="email" class="block text-sm font-medium text-gray-300">
-              Email
-            </label>
-            <div class="mt-1">
-              <input
-                id="email"
-                v-model="email"
-                name="email"
-                type="email"
-                autocomplete="email"
-                required
-                class="bg-gray-700 appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white sm:text-sm"
-              />
-            </div>
-          </div>
-
-          <div>
             <label for="password" class="block text-sm font-medium text-gray-300">
               Password
             </label>
@@ -135,22 +117,6 @@ const handleRegister = async () => {
                 class="bg-gray-700 appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-white sm:text-sm"
               />
             </div>
-          </div>
-
-          <div class="flex items-center">
-            <input
-              id="terms"
-              name="terms"
-              type="checkbox"
-              required
-              class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-600 rounded bg-gray-700"
-            />
-            <label for="terms" class="ml-2 block text-sm text-gray-300">
-              Accetto i
-              <a href="#" class="text-indigo-400 hover:text-indigo-300">
-                termini e condizioni
-              </a>
-            </label>
           </div>
 
           <div>
