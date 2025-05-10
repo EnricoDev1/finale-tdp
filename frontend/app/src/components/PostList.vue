@@ -13,7 +13,7 @@
   });
 
   const posts = ref([]);
-  const isAuthenticated = ref(false); 
+  const isAuthenticated = ref(false);
 
   onMounted(async () => {
 
@@ -54,10 +54,10 @@
           <button v-if="!isAuthenticated"
           @click="$router.push('/login')"
           class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Login</button>
-          
+
           <button v-if="isAuthenticated"
-          @click="$router.push('/logout')" 
-          class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Logout</button>
+          @click="$router.push('/dashboard')"
+          class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Dashboard</button>
         </div>
 
         <!-- Posts Grid -->
@@ -73,7 +73,7 @@
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-900 text-indigo-200">
                   {{ post.category || 'Generale' }}
                 </span>
-                <span class="text-sm text-gray-400">🕒 {{ formatDate(post.timestamp)     }}</span>
+                <span class="text-sm text-gray-400">🕒 {{ formatDate(post.timestamp) }}</span>
               </div>
 
               <h2 class="text-2xl font-bold text-white group-hover:text-indigo-400 transition-colors duration-200 mb-3">

@@ -3,36 +3,35 @@
       <!-- Sidebar e contenuto principale -->
       <div class="flex">
         <!-- Sidebar (come prima) -->
+
         <div class="w-64 bg-gray-800 min-h-screen p-4">
-          <div class="text-white text-2xl font-bold mb-8 p-2 border-b border-gray-700">
-            Admin Dashboard
-          </div>
+            <div class="text-white text-2xl font-bold mb-8 p-2 border-b border-gray-700">
+                Admin Dashboard
+            </div>
 
-          <nav>
-            <router-link
-              to="/dashboard"
-              class="block py-2 px-4 text-gray-300 hover:bg-gray-700 rounded mb-1"
-              active-class="bg-gray-700 text-white"
-            >
-              Panoramica
-            </router-link>
+            <nav>
+                <router-link to="/dashboard" class="block py-2 px-4 text-gray-300 hover:bg-gray-700 rounded mb-1"
+                    active-class="bg-gray-700 text-white">
+                    Home
+                </router-link>
 
-            <router-link
-              to="/dashboard/users"
-              class="block py-2 px-4 text-gray-300 hover:bg-gray-700 rounded mb-1"
-              active-class="bg-gray-700 text-white"
-            >
-              Utenti
-            </router-link>
+                <router-link to="/dashboard/users" class="block py-2 px-4 text-gray-300 hover:bg-gray-700 rounded mb-1"
+                    active-class="bg-gray-700 text-white">
+                    Users
+                </router-link>
 
-            <router-link
-              to="/dashboard/posts"
-              class="block py-2 px-4 text-gray-300 hover:bg-gray-700 rounded mb-1"
-              active-class="bg-gray-700 text-white"
-            >
-              Post
-            </router-link>
-          </nav>
+                <router-link to="/dashboard/posts" class="block py-2 px-4 text-gray-300 hover:bg-gray-700 rounded mb-1"
+                    active-class="bg-gray-700 text-white">
+                    Post
+                </router-link>
+
+                <button
+                    @click="logout"
+                    class="mt-auto text-sm font-medium text-red-400 hover:text-red-300 px-3 py-1 rounded-lg"
+                >
+                    Logout
+                </button>
+            </nav>
         </div>
 
         <!-- Contenuto principale con le card -->
@@ -73,7 +72,7 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="bg-gray-700 p-4 rounded-lg">
                 <div class="flex items-center justify-between">
                   <div>
@@ -133,6 +132,9 @@
   import { ref, onMounted } from 'vue'
   import axios from 'axios'
 
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
+
   const stats = ref({
     totalUsers: 0,
     totalPosts: 0,
@@ -188,4 +190,14 @@
       loading.value = false
     }
   })
+
+
+const logout = () => {
+    deleteCookie("token");
+    router.push("/");
+};
+
+const deleteCookie = (name) => {
+    document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
+};
   </script>
