@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRoute } from 'vue-router'
 import axios from "axios";
 import Navbar from "./Navbar.vue";
 import MarkdownIt from "markdown-it";
@@ -12,6 +13,9 @@ const md = new MarkdownIt({
     typographer: true,
     xhtmlOut: true,
 });
+
+const route = useRoute()
+const error = route.query.error
 
 const posts = ref([]);
 const isAuthenticated = ref(false);
@@ -46,8 +50,8 @@ const formatDate = (timestamp) => {
 </script>
 
 <template>
-        <Navbar />
-        <div class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <Navbar />
+    <div class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
             <div class="flex justify-between items-center mb-12">
                 <div class="text-center w-full">
@@ -55,7 +59,16 @@ const formatDate = (timestamp) => {
                 </div>
             </div>
 
-            <!-- Posts Grid -->
+            <div v-if="error"
+                class="bg-red-900/50 border border-red-700 text-red-200 px-6 py-4 mb-8 rounded-lg shadow-md animate-fade-in">
+                <div class="flex items-start space-x-3">
+                    <span class="text-2xl">❌</span>
+                    <p class="text-sm sm:text-base leading-relaxed">
+                        {{ error }}
+                    </p>
+                </div>
+            </div>
+
             <div class="space-y-6">
                 <article v-for="post in posts" :key="post.id" @click="$router.push(`/post/${post.id}`)"
                     class="group bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer border border-gray-700 hover:border-indigo-500 ">
@@ -123,5 +136,21 @@ const formatDate = (timestamp) => {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.4s ease-out;
 }
 </style>

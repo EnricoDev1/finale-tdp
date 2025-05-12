@@ -26,7 +26,7 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('@/views/DashboardView.vue'),
-    meta: { requiresAuth: true, requiredRole: 'writer' } // Richiede almeno writer
+    meta: { requiresAuth: true, requiredRole: 'admin' } // Richiede almeno writer
   },
   {
     path: '/dashboard/users',
@@ -113,7 +113,7 @@ router.beforeEach((to, from, next) => {
           const userLevel = roleHierarchy[safeUserRole] ?? -1;
 
           if (userLevel < requiredLevel) {
-            return next({ path: '/', query: { error: 'forbidden' } });
+            return next({ path: '/', query: { error: 'Non hai i permessi necessari per accedere a questa pagina' } });
           }
         }
 
