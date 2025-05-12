@@ -26,23 +26,68 @@
                     </router-link>
                 </nav>
             </div>
-            <button v-if="!isAuthenticated" @click="$router.push('/login')"
-                class="absolute top-3 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Login
+            <button v-if="!isAuthenticated"
+                @click="$router.push('/login')"
+                class="absolute top-3 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                Login
             </button>
 
-            <button v-if="isAuthenticated" @click="$router.push('/dashboard')"
-                class="absolute top-3 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Dashboard
+            <button v-else-if="showDashboard"
+                @click="$router.push('/dashboard')"
+                class="absolute top-3 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                Dashboard
+            </button>
+
+            <button v-else
+                @click="logout"
+                class="absolute top-3 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+                Logout
             </button>
         </div>
     </header>
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
-    const isAuthenticated = ref(false);
+const isAuthenticated = ref(false);
+const showDashboard = ref(false);
 
-    onMounted(() => {
-        isAuthenticated.value = !!document.cookie;
-    })
+onMounted(() => {
+  const cookie = document.cookie;
+  const token = cookie.split('=')[1];
+
+  isAuthenticated.value = !!token;
+
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const role = payload.role;
+
+      const roleHierarchy = {
+        'user': 0,
+        'writer': 1,
+        'admin': 2
+      };
+
+      const userLevel = roleHierarchy[role] ?? -1;
+      showDashboard.value = userLevel >= roleHierarchy['writer'];
+    } catch (err) {
+      console.error('Token decode error:', err);
+      showDashboard.value = false;
+    }
+  }
+});
+
+const logout = () => {
+    deleteCookie("token");
+    router.push("/login");
+};
+
+const deleteCookie = (name) => {
+    document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
+};
 </script>
+

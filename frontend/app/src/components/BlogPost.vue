@@ -29,10 +29,7 @@ const post = ref(null);
 
 onMounted(async () => {
     const res = await axios.get(`http://localhost:3000/api/blog/posts/${route.params.id}`);
-    post.value = {
-        ...res.data,
-        content: render(res.data.content.trim())
-    };
+    post.value = res.data;
 });
 
 const render = (content) => {

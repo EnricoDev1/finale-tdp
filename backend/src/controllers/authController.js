@@ -7,7 +7,7 @@ export const registerUser = async (req, res) => {
 
     try {
         const hash = await bcrypt.hash(password, 10);
-        const [result] = await pool.query("INSERT INTO users (displayname, username, password, role) VALUES (?, ?, ?, 'admin')", [displayname, username, hash]);
+        const [result] = await pool.query("INSERT INTO users (displayname, username, password, role) VALUES (?, ?, ?, 'user')", [displayname, username, hash]);
 
         res.json({ status: "user registered ", userId: result.insertId });
     } catch (err) {

@@ -6,30 +6,63 @@ const posts = ref([]);
 const loading = ref(true);
 const error = ref(null);
 const searchQuery = ref("");
+const isAdmin = ref(false);
+const currentUserId = ref(null);
+const currentUserDisplayName = ref("");
 
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
+const checkUserRole = () => {
+    try {
+        const token = document.cookie.split('=')[1];
+        if (!token) {
+            router.push("/login");
+            return false;
+        }
+
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        isAdmin.value = payload.role === 'admin';
+        currentUserId.value = payload.id;
+        currentUserDisplayName.value = payload.displayname;
+        return true;
+    } catch (err) {
+        error.value = "Errore di autenticazione";
+        loading.value = false;
+        return false;
+    }
+};
+
 onMounted(async () => {
+    if (!checkUserRole()) return;
+
     try {
         const token = `Bearer ${document.cookie.split('=')[1]}`;
-
         const res = await axios.get("http://localhost:3000/api/blog/posts", {
             headers: {
                 'authorization': token
             }
         });
 
-        console.log("Dati ricevuti:", res.data);
-        posts.value = res.data;
+        posts.value = isAdmin.value
+            ? res.data
+            : res.data.filter(post => post.author === currentUserDisplayName.value);
+
         loading.value = false;
     } catch (err) {
+        error.value = "Errore nel caricamento dei post";
+        loading.value = false;
     }
 });
 
 const filteredposts = () => {
-    if (!searchQuery.value) return posts.value;
-    return posts.value.filter(post =>
+    const postsToFilter = isAdmin.value
+        ? posts.value
+        : posts.value.filter(post => post.author === currentUserDisplayName.value);
+
+    if (!searchQuery.value) return postsToFilter;
+
+    return postsToFilter.filter(post =>
         post.title.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
         post.content.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
         post.author.toLowerCase().includes(searchQuery.value.toLowerCase())
