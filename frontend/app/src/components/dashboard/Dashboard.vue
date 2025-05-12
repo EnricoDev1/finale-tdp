@@ -1,9 +1,29 @@
 <template>
+    <header class="bg-gray-800 border-b border-gray-700">
+  <div class="container mx-auto px-4 py-3 flex items-center">
+    <div class="flex items-center space-x-6">
+      <router-link to="/" class="text-white flex items-center">
+        <font-awesome-icon :icon="['fas', 'newspaper']" class="h-6 w-6 text-indigo-400 mr-2" />
+        <span class="text-xl font-bold">NewsPortal</span>
+      </router-link>
+      
+      <nav class="hidden md:flex space-x-4">
+        <router-link to="/" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+          Home
+        </router-link>
+        <router-link to="/news" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+          News
+        </router-link>
+        <router-link to="/newpost" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+          Nuovo Post
+        </router-link>
+      </nav>
+    </div>   
+  </div>
+  </header>
     <div class="min-h-screen bg-gray-900">
       <!-- Sidebar e contenuto principale -->
       <div class="flex">
-        <!-- Sidebar (come prima) -->
-
         <div class="w-64 bg-gray-800 min-h-screen p-4">
             <div class="text-white text-2xl font-bold mb-8 p-2 border-b border-gray-700">
                 Admin Dashboard

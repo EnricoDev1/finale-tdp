@@ -1,47 +1,39 @@
 <template>
-    <div class="min-h-screen bg-gray-900">
-      <!-- Header semplificato -->
-      <header class="bg-gray-800 border-b border-gray-700">
-      <div class="container mx-auto px-4 py-3 flex items-center">
-        <!-- Logo e navigazione a sinistra -->
-        <div class="flex items-center space-x-6">
-          <router-link to="/" class="text-white flex items-center">
-            <font-awesome-icon :icon="['fas', 'newspaper']" class="h-6 w-6 text-indigo-400 mr-2" />
-            <span class="text-xl font-bold">NewsPortal</span>
+  <div class="min-h-screen bg-gray-900">
+    <header class="bg-gray-800 border-b border-gray-700">
+    <div class="container mx-auto px-4 py-3 flex items-center">
+      <div class="flex items-center space-x-6">
+        <router-link to="/" class="text-white flex items-center">
+          <font-awesome-icon :icon="['fas', 'newspaper']" class="h-6 w-6 text-indigo-400 mr-2" />
+          <span class="text-xl font-bold">NewsPortal</span>
+        </router-link>
+        
+        <nav class="hidden md:flex space-x-4">
+          <router-link to="/" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+            Home
           </router-link>
-          
-          <nav class="hidden md:flex space-x-4">
-            <router-link 
-              to="/" 
-              class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium"
-              active-class="text-white"
-            >
-              Home
-            </router-link>
-            <router-link 
-              to="/about" 
-              class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium"
-              active-class="text-white"
-            >
-              Chi Siamo
-            </router-link>
-          </nav>
-        </div>
-
-        <!-- Spazio vuoto al centro -->
-        <div class="flex-1"></div>
-
-        <div class="flex items-center space-x-4">
-            <button v-if="!isAuthenticated"
-          @click="$router.push('/login')"
-          class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Login</button>
-          
-          <button v-if="isAuthenticated"
-          @click="$router.push('/logout')" 
-          class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Logout</button>
-        </div>
+          <router-link to="/news" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+            News
+          </router-link>
+          <router-link to="/inflazione" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+            Inflazione
+          </router-link>
+          <router-link to="/newpost" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+            Nuovo Post
+          </router-link>
+        </nav>
       </div>
-    </header>
+      <button v-if="!isAuthenticated"
+        @click="$router.push('/login')"
+        class="absolute top-3 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Login
+      </button>
+
+      <button v-if="isAuthenticated"
+        @click="$router.push('/dashboard')"
+        class="absolute top-3 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Dashboard
+      </button>      
+    </div>
+  </header>
   
       <div class="flex">  
         <!-- Contenuto principale -->
@@ -161,5 +153,6 @@
   onMounted(() => {
     fetchNews()
     isAuthenticated.value = !!document.cookie;
+    
 })
   </script>

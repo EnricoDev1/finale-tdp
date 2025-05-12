@@ -44,20 +44,47 @@
 </script>
 
 <template>
+  <header class="bg-gray-800 border-b border-gray-700">
+  <div class="container mx-auto px-4 py-3 flex items-center">
+    <div class="flex items-center space-x-6">
+      <router-link to="/" class="text-white flex items-center">
+        <font-awesome-icon :icon="['fas', 'newspaper']" class="h-6 w-6 text-indigo-400 mr-2" />
+        <span class="text-xl font-bold">NewsPortal</span>
+      </router-link>
+      
+      <nav class="hidden md:flex space-x-4">
+        <router-link to="/" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+          Home
+        </router-link>
+        <router-link to="/news" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+          News
+        </router-link>
+        <router-link to="/inflazione" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+          Inflazione
+        </router-link>
+        <router-link to="/newpost" class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium" active-class="text-white">
+          Nuovo Post
+        </router-link>
+      </nav>
+    </div>
+      <button v-if="!isAuthenticated"
+        @click="$router.push('/login')"
+        class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Login
+      </button>
+
+      <button v-if="isAuthenticated"
+        @click="$router.push('/dashboard')"
+        class="absolute top-3 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Dashboard
+      </button>      
+    </div>
+  </header>
+
     <div class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-4xl mx-auto">
         <div class="flex justify-between items-center mb-12">
           <div class="text-center w-full">
-            <h1 class="text-4xl font-extrabold text-white sm:text-5xl mb-3">📝 Cavagni and Officioso's blog</h1>
             <p class="text-xl text-gray-400">Pensieri ed idee sulle guerre economiche</p>
           </div>
-          <button v-if="!isAuthenticated"
-          @click="$router.push('/login')"
-          class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Login</button>
-
-          <button v-if="isAuthenticated"
-          @click="$router.push('/dashboard')"
-          class="absolute top-6 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">Dashboard</button>
         </div>
 
         <!-- Posts Grid -->

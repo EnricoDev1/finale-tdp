@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Inflazione Turchia (Dark Theme)</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      max-width: 800px;
+      margin: auto;
+      padding: 2rem;
+    }
+    canvas {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Inflazione in Turchia (2000–2022)</h2>
+  <canvas id="inflationChart"></canvas>
+
+  <script>
+    const url = "https://api.worldbank.org/v2/country/TR/indicator/FP.CPI.TOTL.ZG?format=json&date=2000:2022";
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        const records = data[1];
+        const labels = records.map(r => r.date).reverse();
+        const values = records.map(r => r.value).reverse();
+
+        const ctx = document.getElementById('inflationChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Inflazione (%)',
+              data: values,
+              fill: false,
+              borderColor: '#ff9800',
+              tension: 0.3,
+              pointRadius: 3,
+              pointBackgroundColor: '#ff9800'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: {
+                labels: {
+                  color: '#f0f0f0'
+                }
+              },
+              tooltip: {
+                mode: 'index',
+                intersect: false,
+                backgroundColor: '#333',
+                titleColor: '#ff9800',
+                bodyColor: '#fff'
+              }
+            },
+            scales: {
+              y: {
+                ticks: {
+                  color: '#f0f0f0'
+                },
+                title: {
+                  display: true,
+                  text: '% Annuale',
+                  color: '#f0f0f0'
+                },
+                grid: {
+                  color: '#333'
+                }
+              },
+              x: {
+                ticks: {
+                  color: '#f0f0f0'
+                },
+                title: {
+                  display: true,
+                  text: 'Anno',
+                  color: '#f0f0f0'
+                },
+                grid: {
+                  color: '#333'
+                }
+              }
+            }
+          }
+        });
+      });
+  </script>
+
+</body>
+</html>

@@ -50,6 +50,16 @@ const routes = [
     path: '/news',
     name: 'news',
     component: () => import('@/views/NewsView.vue')    
+  }, 
+  {
+    path: '/newpost',
+    name: 'newpost',
+    component: () => import('@/views/NewPostView.vue')    
+  },
+  {
+    path: '/inflazione',
+    name: 'inflazione',
+    component: () => import('@/views/InflationView.vue')
   }
 ];
 
