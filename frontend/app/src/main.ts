@@ -12,7 +12,11 @@ import {
   faTrash,
   faUsers,
   faFileLines,
-  faArrowRight
+  faArrowRight,
+  faExternalLinkAlt,
+  faNewspaper,
+  faSync,
+  faSpinner
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -22,7 +26,11 @@ library.add(
   faTrash,
   faUsers,
   faFileLines,
-  faArrowRight
+  faArrowRight,
+  faExternalLinkAlt,
+  faNewspaper,
+  faSync,
+  faSpinner
 )
 
 const app = createApp(App)
