@@ -34,7 +34,7 @@
 
             <button
                 v-else-if="showDashboard"
-                @click="$router.push(isAdmin ? '/dashboard' : '/dashboard/posts')"
+                @click="$router.push('/dashboard')"
                 class="absolute top-3 right-6 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
                 Dashboard
             </button>
@@ -75,8 +75,7 @@ onMounted(() => {
       };
 
       const userLevel = roleHierarchy[role] ?? -1;
-      showDashboard.value = userLevel >= roleHierarchy['writer'];
-      isAdmin.value = userLevel === roleHierarchy['admin'];
+      showDashboard.value = userLevel >= roleHierarchy['admin'];
     } catch (err) {
       console.error('Token decode error:', err);
       showDashboard.value = false;

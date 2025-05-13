@@ -9,7 +9,7 @@ export const authenticateToken = (req, res, next) => {
   jwt.verify(token, process.env.SECRET, (err, user) => {
     if (err) {
       return res.sendStatus(403);
-    } 
+    }
     req.user = user;
     console.log(user);
     next();
@@ -22,3 +22,10 @@ export const requireAdmin = (req, res, next) => {
   }
   next();
 };
+
+export const requireWriter = (req, res, next) => {
+    if (req.user.role !== 'writer' && req.user.role !== 'admin') {
+      return res.status(403).json({ message: 'Permission denied' });
+    }
+    next();
+  };

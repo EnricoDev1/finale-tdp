@@ -38,13 +38,13 @@ const routes = [
     path: '/dashboard/posts',
     name: 'Posts',
     component: () => import('@/views/PostsView.vue'),
-    meta: { requiresAuth: true, requiredRole: 'writer' } // Almeno writer
+    meta: { requiresAuth: true, requiredRole: 'admin' } // Almeno writer
   },
   {
     path: '/dashboard/posts/edit/:id',
     name: 'Edits',
     component: () => import('@/views/PostEditView.vue'),
-    meta: { requiresAuth: true, requiredRole: 'writer' }
+    meta: { requiresAuth: true, requiredRole: 'admin' }
   },
   {
     path: '/dashboard/users/edit/:id',
