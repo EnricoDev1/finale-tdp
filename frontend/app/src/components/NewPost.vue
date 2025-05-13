@@ -58,7 +58,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import Navbar from './Navbar.vue'
+import Navbar from './utils/Navbar.vue'
 import axios from "axios";
 
 const router = useRouter()

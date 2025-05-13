@@ -5,7 +5,7 @@ import axios from "axios";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 import hljs from "highlight.js";
-import Navbar from "./Navbar.vue";
+import Navbar from "./utils/Navbar.vue";
 import "highlight.js/styles/atom-one-dark.css";
 
 const md = new MarkdownIt({

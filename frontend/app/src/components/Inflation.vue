@@ -58,7 +58,7 @@
 <script setup>
 import { ref, onMounted, watch, nextTick } from 'vue';
 import Chart from 'chart.js/auto';
-import Navbar from './Navbar.vue';
+import Navbar from './utils/Navbar.vue';
 
 // Lista paesi con relativi codici ISO
 const countries = ref([

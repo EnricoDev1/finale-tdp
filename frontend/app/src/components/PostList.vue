@@ -2,7 +2,7 @@
 import { ref, onMounted, computed } from "vue";
 import { useRoute } from 'vue-router'
 import axios from "axios";
-import Navbar from "./Navbar.vue";
+import Navbar from "./utils/Navbar.vue";
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
 

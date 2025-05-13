@@ -52,7 +52,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import Navbar from './Navbar.vue'
+import Navbar from './utils/Navbar.vue'
 import axios from 'axios'
 
 const loading = ref(true)

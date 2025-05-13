@@ -1,5 +1,5 @@
 <script setup>
-import Navbar from "./Navbar.vue";
+import Navbar from "./utils/Navbar.vue";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";

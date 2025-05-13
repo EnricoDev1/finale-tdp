@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import Navbar from "./Navbar.vue";
+import Navbar from "./utils/Navbar.vue";
 
 const router = useRouter();
 const name = ref("");
