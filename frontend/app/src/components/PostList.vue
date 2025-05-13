@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRoute } from 'vue-router'
 import axios from "axios";
 import Navbar from "./Navbar.vue";
@@ -19,6 +19,8 @@ const error = route.query.error
 
 const posts = ref([]);
 const isAuthenticated = ref(false);
+const currentPage = ref(1);
+const postsPerPage = 5;
 
 onMounted(async () => {
     isAuthenticated.value = !!document.cookie;
@@ -31,6 +33,32 @@ onMounted(async () => {
         }))
         .reverse();
 });
+
+const paginatedPosts = computed(() => {
+    const start = (currentPage.value - 1) * postsPerPage;
+    const end = start + postsPerPage;
+    return posts.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+    return Math.ceil(posts.value.length / postsPerPage);
+});
+
+const nextPage = () => {
+    if (currentPage.value < totalPages.value) {
+        currentPage.value++;
+    }
+};
+
+const prevPage = () => {
+    if (currentPage.value > 1) {
+        currentPage.value--;
+    }
+};
+
+const goToPage = (page) => {
+    currentPage.value = page;
+};
 
 const render = (content) => {
     const cleanedContent = content.trim().replace(/^\s+/gm, "");
@@ -70,8 +98,8 @@ const formatDate = (timestamp) => {
             </div>
 
             <div class="space-y-6">
-                <article v-for="post in posts" :key="post.id" @click="$router.push(`/post/${post.id}`)"
-                    class="group bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer border border-gray-700 hover:border-indigo-500 ">
+                <article v-for="post in paginatedPosts" :key="post.id" @click="$router.push(`/post/${post.id}`)"
+                class="group bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer border border-gray-700 hover:border-indigo-500">
                     <div class="p-6 sm:p-8">
                         <div class="flex items-center justify-between mb-4">
                             <span
@@ -103,6 +131,26 @@ const formatDate = (timestamp) => {
                         </div>
                     </div>
                 </article>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div v-if="totalPages > 1" class="mt-12 flex items-center justify-center space-x-2 space-y-3 py-4">
+                <button @click="prevPage" :disabled="currentPage === 1"
+                    class="px-4 py-2 rounded-md bg-gray-800 text-gray-300 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-gray-700">
+                    &larr; Precedente
+                </button>
+
+                <div class="flex space-x-2">
+                    <button v-for="page in totalPages" :key="page" @click="goToPage(page)"
+                        :class="['px-3 py-1 rounded-md transition-colors', currentPage === page ? 'bg-indigo-600 text-white' : 'bg-gray-800 text-gray-300 hover:bg-gray-700']">
+                        {{ page }}
+                    </button>
+                </div>
+
+                <button @click="nextPage" :disabled="currentPage === totalPages"
+                    class="px-4 py-2 rounded-md bg-gray-800 text-gray-300 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors border border-gray-700">
+                    Successiva &rarr;
+                </button>
             </div>
         </div>
     </div>
